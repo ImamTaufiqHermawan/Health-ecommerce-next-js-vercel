@@ -7,10 +7,11 @@ import {
   ShoppingOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
+import { Suspense } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
-export default function OrderSuccessPage() {
+function OrderSuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const orderId = searchParams.get("orderId");
@@ -62,8 +63,29 @@ export default function OrderSuccessPage() {
           ]}
         />
       </main>
-
       <Footer />
     </div>
   );
+}
+
+export default function OrderSuccessPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen flex flex-col">
+          <Navbar />
+          <main className="flex-1 flex items-center justify-center">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+              <p className="mt-4 text-gray-600">Loading...</p>
+            </div>
+          </main>
+          <Footer />
+        </div>
+      }
+    >
+      <OrderSuccessContent />
+    </Suspense>
+  );
+} );
 }
